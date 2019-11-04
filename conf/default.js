@@ -68,8 +68,8 @@ module.exports = {
 	// If you wish any path that is not bound to `apiPrefix` to be accessible without
 	// authentication, then you can explicitly add them to `public` paths.
 	accessControl: {
-		apiPrefixSecurity: 'basic', // none | basic | apikey | ldap | plugin
-		public: ['/api']
+		apiPrefixSecurity: 'none', // none | basic | apikey | ldap | plugin
+		public: []
 	},
 
 	// Control the settings for the @axway/api-builder-admin UI console
