@@ -23,7 +23,7 @@ module.exports = {
 	baseurl: 'http://localhost',
 
 	// This is the port the service will be bound to
-	port: 8081,
+	port: 8080,
 
 	// Enabling this property will print out the process.env at startup time
 	printEnvVars: false,
