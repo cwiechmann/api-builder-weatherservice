@@ -22,8 +22,15 @@ module.exports = {
 	// This is the base url the service will be reachable at not including the port
 	baseurl: 'http://localhost',
 
-	// This is the port the service will be bound to
-	port: 8080,
+  // Configures your http server
+	http: {
+		// This is the port the service will be bound to. Defaults to 8080.
+		port: parseInt(process.env.PORT) || 8080,
+
+		// When this is true, the service will no longer listen on requests over http.
+		// Disabling http requires 'ssl' to be configured.
+		disabled: false
+	},
 
 	// Enabling this property will print out the process.env at startup time
 	printEnvVars: false,
@@ -39,8 +46,9 @@ module.exports = {
 	// The number of milliseconds before timing out a request to the server.
 	timeout: 120000,
 
-	// Log level of the main logger. Can be set to 'debug', 'error', 'fatal', 'info', 'trace', or 'warn'.
-	logLevel: 'debug',
+  // Log level of the application. Can be set to (in order of most-verbose to
+	// least): trace, debug, info, warn, error, fatal, none
+	logLevel: process.env.LOG_LEVEL || 'debug',
 
 	// Prefix to use for APIs, access to which is governed via `accessControl`.
 	apiPrefix: '/api',
@@ -156,34 +164,54 @@ module.exports = {
 	// This configuration option allows to configure proxy server URL that can be leveraged in plugins that do http/s communication
 	// proxy: 'http://localhost:8081',
 
-	flags: {
-		// Flags to enable features that are not ready for production or
-		// whose use may require manual upgrade steps in legacy services.
-
-		// Enable support for aliases in comparison operators on composite models.
-		// Breaking change for old versions as previously queries $lt, $gt, $lte, $gte, $in, $nin, $eq would not have translated aliasesd fields.
+  flags: {
+		// Enable support for aliases in comparison operators on composite
+		// models. Breaking change for old versions as previously queries $lt,
+		// $gt, $lte, $gte, $in, $nin, $eq would not have translated aliased
+		// fields.
 		enableAliasesInCompositeOperators: true,
 
-		// Enable support for the $like comparison operator in the Memory connector.
+		// Enable support for the $like comparison operator in the Memory
+		// connector.
 		enableMemoryConnectorLike: true,
 
-		// Enable support for Models that have no primary key.
-		// Breaking change for old versions as previously the Create API returned a location header. Also the model advertised unsupported methods.
+		// Enable support for Models that have no primary key. Breaking change
+		// for old versions as previously the Create API returned a location
+		// header. Also the model advertised unsupported methods.
 		enableModelsWithNoPrimaryKey: true,
 
-		// Generate APIs and Flows that user primary key type rather than always assuming string.
-		// Breaking change for old versions as the generated APIs will change when enabled.
+		// Generate APIs and Flows that user primary key type rather than always
+		// assuming string. Breaking change for old versions as the generated
+		// APIs will change when enabled.
 		usePrimaryKeyType: true,
 
-		// Enabling this flag will cause the service to exit when there is a problem loading a plugin
+		// Enabling this flag will cause the service to exit when there is a
+		// problem loading a plugin
 		exitOnPluginFailure: true,
 
-		// Enabling this flag ensures that a plugin only receives the config relevant to that plugin.
+		// Enabling this flag ensures that a plugin only receives the config
+		// relevant to that plugin.
 		enableScopedConfig: true,
 
-		// Enable support for model names being percent-encoded as per RFC-3986.
-		// Breaking change for old versions as previously names like "foo/bar" will now be encoded as "foo%2Fbar"
-		enableModelNameEncoding: true
+		// Enable support for null fields coming from Models
+		enableNullModelFields: true,
+
+		// Enable support for model names being percent-encoded as per RFC-3986
+		// in auto-generated API. Breaking change for old versions as previously
+		// names like "foo/bar" will now be encoded as "foo%2Fbar"
+		enableModelNameEncoding: true,
+
+		// Enable support for model names being percent-encoded as per RFC-3986
+		// in API Builder's Swagger. Breaking change for old versions as
+		// previously names like "foo/bar" will now be encoded as "foo%2Fbar"
+		enableModelNameEncodingInSwagger: true,
+
+		// Enable support for model names being encoded whilst preserving the
+		// connector's slash. This flag only applies when
+		// enableModelNameEncodingInSwagger is enabled. Breaking change for old
+		// versions as previously model names that start with a connector name,
+		// e.g. "oracle/foó" will now be encoded as "oracle/fo%C3%B3".
+		enableModelNameEncodingWithConnectorSlash: true
 	},
 
 	authorization: {
